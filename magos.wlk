@@ -3,9 +3,9 @@ import academia.*
 object selene {
   var nivelDeEnergia = 35
   var nivelDePoder = 60
-  var luzLunar = true
+  var luzLunar = false
   
-  method cambiarLuzLunar() {
+  method alternar() {
     luzLunar = not luzLunar
   }
   
@@ -39,11 +39,13 @@ object balthazar {
   
   method nivelDeEnergia() = nivelDeEnergia
   
-  method nivelDePoder() = (nivelDePoder - hechizosDaninos) * 3
+  method nivelDePoder() {
+    return nivelDePoder - (3 * hechizosDaninos)
+  }
   
   method entrenar() {
-    nivelDeEnergia + 10
-    hechizosDaninos + 1
+    nivelDeEnergia += 10
+    hechizosDaninos += 1
   }
 }
 
@@ -55,16 +57,16 @@ object iris {
   method sanacion() = sanacion
   
   method entrenar() {
-    sanacion + 1
+    sanacion += 1
   }
   
   method mejorarEscudo() {
-    if (sanacion.isEven()) {
-      escudoMagico.resistencia() + 150
-      escudoMagico.durabilidad() + 100
+    if (sanacion.even()) {
+      escudoMagico.mejorarResistencia(150)
+      escudoMagico.mejorarDurabilidad(100)
     } else {
-      sanacion * (escudoMagico.resistencia() + 80)
-      sanacion * (escudoMagico.durabilidad() + 60)
+      escudoMagico.mejorarResistencia(80)
+      escudoMagico.mejorarDurabilidad(60 * sanacion)
     }
   }
 }
@@ -72,24 +74,15 @@ object iris {
 object aldric {
   var nivelDePoder = 15
   var nivelDeEnergia = 65
-  var bastonActual = bastonDeHielo
-  
-  method cambiarBaston(baston) {
-    bastonActual = baston
-  }
-  
-  method bastonActual() = bastonActual
+  var property bastonActual = bastonDeHielo
   
   method entrenar() {
-    nivelDeEnergia + 20
+    nivelDeEnergia += 20
     self.aumentarNivelDePoder()
   }
   
   method aumentarNivelDePoder() {
-    if (self.bastonActual() == bastonDeFuego) {
-      return nivelDePoder + 30
-    }
-    return nivelDePoder + 20
+    nivelDePoder += self.bastonActual().nivelDePoder()
   }
   
   method nivelDePoder() = nivelDePoder
@@ -98,9 +91,26 @@ object aldric {
 }
 
 object bastonDeFuego {
-  
+  method nivelDePoder() = 30
 }
 
 object bastonDeHielo {
+  method nivelDePoder() = 20
+}
+
+object escudoMagico {
+  var resistencia = 400
+  var durabilidad = 600
   
+  method mejorarResistencia(unValor) {
+    resistencia += unValor
+  }
+
+  method mejorarDurabilidad(unValor) {
+    durabilidad = 1000.min(durabilidad + unValor)
+  }
+
+  method resistencia() = resistencia
+
+  method durabilidad() = durabilidad
 }

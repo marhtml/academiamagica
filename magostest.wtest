@@ -1,9 +1,78 @@
 import academia.*
 import magos.*
 
-describe 'tests academia' {
-    test "reclutar a aldric" {
-        academia.unirse(aldric)
-        assert.that(academia.candidatos().contains(aldric))
-    }
+describe "tests academia" {
+  test "reclutar a aldric" {
+    academia.unirse(aldric)
+    assert.that(academia.candidatos().contains(aldric))
+  }
+  
+  test "reclutar a aldric con baston de fuego" {
+    aldric.bastonActual(bastonDeFuego)
+    aldric.entrenar()
+    academia.unirse(aldric)
+    assert.that(academia.alumnos().contains(aldric))
+  }
+  
+  test "selene alterna" {
+    selene.alternar()
+    selene.entrenar()
+    academia.unirse(selene)
+    assert.that(academia.candidatos().contains(selene))
+  }
+  
+  test "selene no alterna" {
+    selene.entrenar()
+    academia.unirse(selene)
+    assert.that(academia.alumnos().contains(selene))
+  }
+  
+  test "balthazar se une" {
+    academia.unirse(balthazar)
+    assert.that(academia.alumnos().contains(balthazar))
+  }
+  
+  test "balthazar no se une" {
+    balthazar.entrenar()
+    balthazar.entrenar()
+    academia.unirse(balthazar)
+    assert.that(academia.candidatos().contains(balthazar))
+  }
+  
+  test "iris escudo magico" {
+    //  mejorando su resistencia y durabilidad a 550 y 700,
+    iris.mejorarEscudo()
+    assert.equals(550, escudoMagico.resistencia())
+    assert.equals(700, escudoMagico.durabilidad())
+  }
+  
+  test "iris escudo magico 2" {
+    // En otro test, entrena y vuelve a usar su sanación, dejando el escudo con 480 puntos de resistencia y 780 de durabilidad.
+    iris.entrenar()
+    iris.mejorarEscudo()
+    assert.equals(480, escudoMagico.resistencia())
+    assert.equals(780, escudoMagico.durabilidad())
+  }
+
+  test "equipo" {
+    academia.unirse(aldric)
+    academia.unirse(iris)
+    academia.unirse(balthazar)
+    academia.unirse(selene)
+    assert.that(academia.alumnos().contains(balthazar))
+    assert.that(academia.alumnos().contains(iris))
+  }
+
+  test "equipo 2" {
+    selene.entrenar()
+    balthazar.entrenar()
+    academia.unirse(aldric)
+    academia.unirse(iris)
+    academia.unirse(balthazar)
+    academia.unirse(selene)
+    assert.that(academia.alumnos().contains(selene))
+    assert.equals(127, academia.poderTotal())
+    assert.equals(5, academia.deltaDeEnergia())
+    assert.that(academia.estaEnCondicion())
+  }
 }

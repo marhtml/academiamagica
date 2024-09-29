@@ -24,14 +24,7 @@ object academia {
   
   method elMenosPoderoso() = alumnos.min({ a => a.nivelDePoder() })
   
-  method deltaDeEnergia() = self.elMasPoderoso().nivelDePoder() - self.elMenosPoderoso().nivelDePoder()
+  method deltaDeEnergia() = self.elMasPoderoso().nivelDeEnergia() - self.elMenosPoderoso().nivelDeEnergia()
   
   method energiaSuperiorA90() = alumnos.filter({ a => a.nivelDeEnergia() > 90 })
-}
-
-object escudoMagico {
-  var property resistencia = 400
-  var durabilidad = 600
-  
-  method durabilidad() = 1000.min(durabilidad)
 }
